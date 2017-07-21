@@ -27,26 +27,58 @@ var cards =
 var cardsInPlay = [];
 var checkForMatch = function()
 {
-    if (cardsInPlay[0]=== cardsInPlay[1])
+    if (cardsInPlay.length === 2)
     {
-      alert("You found a match!");
+      if (cardsInPlay[0]=== cardsInPlay[1])
+      {
+        alert("You found a match!");
+        cardsInPlay = [];
+      }
+      else
+      {
+        alert("Sorry, try again.");
+        cardsInPlay = [];
+      }
     }
-    else
-    {
-      alert("Sorry, try again.");
-    }
-
 }
-var flipCard = function(cardId)
+var flipCard = function()
 {
-  console.log("User flipped " + cards[cardId].rank);
+  var cardId = this.getAttribute('data-id');
+  console.log(cards[cardId].cardImage)
+  this.setAttribute('src', cards[cardId].cardImage);
+  // console.log("User flipped " + cards[cardId].rank);
   cardsInPlay.push(cards[cardId].rank);
-  checkForMatch();
-  console.log(cards[cardId].cardImage);
-  console.log(cards[cardId].suit);
-};
-flipCard(0);
-flipCard(2);
-if (cardsInPlay.length === 2)
-{
+  setTimeout(checkForMatch, 200);
+  // console.log(cards[cardId].cardImage);
+  // console.log(cards[cardId].suit);
 }
+var createBoard = function()
+{
+  for (var i =0 ; i < cards.length; i++)
+  {
+    var cardElement = document.createElement('img');
+    cardElement.setAttribute('src', 'images/back.png');
+    cardElement.setAttribute('data-id', i);
+    cardElement.addEventListener('click', flipCard);
+    document.getElementById('game-board').appendChild(cardElement);
+  }
+}
+createBoard();
+// Create a button element, a click event, and a callback function that resets the cards
+/*var button = document.createElement('button');
+button.textContent = 'Play again!';
+document.getElementById('game-board').appendChild(button);
+button.style.display = 'block'; */
+
+var resetCards = function()
+{
+  for (var i =0 ; i < cards.length; i++)
+  {
+    var pictures = document.querySelectorAll('img');
+    pictures[i].setAttribute('src', 'images/back.png');
+  }
+  cardsInPlay = [];
+}
+var button = document.querySelector('button');
+button.addEventListener('click', resetCards);
+console.log(button);
